@@ -824,7 +824,10 @@ case $host_cpu in
             if [ $SYS = MACOSX ] ; then
                 CFLAGS="$CFLAGS -faltivec -fastf -mcpu=G4"
             else
-                CFLAGS="$CFLAGS -maltivec -mabi=altivec"
+                CFLAGS="$CFLAGS -maltivec"
+                if cc_check "" "-mabi=altivec" ; then
+                    CFLAGS="$CFLAGS -mabi=altivec"
+                fi
                 define HAVE_ALTIVEC_H
             fi
             if [ "$vsx" != "no" ] ; then
