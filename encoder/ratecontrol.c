@@ -2460,7 +2460,8 @@ static float rate_estimate_qscale( x264_t *h )
         if( rcc->b_vbv )
         {
             double frame_size_maximum = X264_MIN( rcc->frame_size_maximum, X264_MAX( rcc->buffer_fill, 0.001 ) );
-            if( rcc->frame_size_planned > frame_size_maximum )
+            /* frame_size_maximum can be negative if the frame duration is negative (pts going backwards). */
+            if( frame_size_maximum > 0 && rcc->frame_size_planned > frame_size_maximum )
             {
                 q *= rcc->frame_size_planned / frame_size_maximum;
                 rcc->frame_size_planned = frame_size_maximum;
@@ -2646,7 +2647,8 @@ static float rate_estimate_qscale( x264_t *h )
         if( rcc->b_vbv )
         {
             double frame_size_maximum = X264_MIN( rcc->frame_size_maximum, X264_MAX( rcc->buffer_fill, 0.001 ) );
-            if( rcc->frame_size_planned > frame_size_maximum )
+            /* frame_size_maximum can be negative if the frame duration is negative (pts going backwards). */
+            if( frame_size_maximum > 0 && rcc->frame_size_planned > frame_size_maximum )
             {
                 q *= rcc->frame_size_planned / frame_size_maximum;
                 rcc->frame_size_planned = frame_size_maximum;
